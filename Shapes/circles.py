@@ -1,5 +1,5 @@
 radius = 3.7           # change this
-arc = 90               # change this
+arc = 180               # change this
 
 #############################################################
 import tkinter as tk
@@ -10,12 +10,15 @@ from functools import partial
 scale = .02
 radius = radius/scale
 margin = 10
-w = int(2 * radius)
+w = int(5 * radius) 
+FONT = "Arial 24"
+SMALL_FONT = "Arial 16"
 
-slot1 = 0.2*w
-slot2 = 0.45*w
-slot3 = 0.55*w
-slot4 = 0.9*w
+xslot1 = 0.05*w
+xslot2 = 0.8*w
+xslot3 = 0.25*w
+xslot4 = 0.8*w
+yslot = 0.8*w
 π = 3.14
 baseRadiusText = (0.75*w-margin, 0.50*w+2*margin)
 wx = (w+radius*np.cos(arc*π/180))/2
@@ -23,18 +26,39 @@ wy = (w-radius*np.sin(arc*π/180))/2
 radiusText = (wx, wy)
 
 arcText = np.array((w/2+2*margin, w/2-margin))
-areaText = (slot2, w-0.5*margin)
-perimeterText = (slot4, w-0.5*margin)
+areaText = (xslot2, yslot)
+perimeterText = (xslot4, yslot)
+area_id = None
+perimeter_id = None
 
 def main():
     def printArea(arc):
-        area = π * (radius*scale)**2 * arc / 360
-        print(area)
-        canvas.create_text(*areaText, text=f"{area:.3f}")
+        global area_id, perimeter_id
+        canvas.delete(perimeter_id)
+        r = radius*scale
+        area = "A = θ/360.πr².\n"
+        area += f"A = {arc/360}.πr².\n"
+        area += f"r² = {r}x{r} = {r**2:.3f}\n"
+        area += f"A = π x {r**2:.3f} x {arc/360}\n" 
+        area += f"A = π x {r**2 * arc/360:.3f}\n" 
+        area += f"A = {π * r**2 * arc / 360:.3f}"
+        area_id = canvas.create_text(*areaText, text=area, font=FONT)
     def printPerimeter(arc):
-        perimeter = 2 * radius*scale + 2 * π * radius*scale * arc / 360
+        global area_id, perimeter_id
+        canvas.delete(area_id)
+        r = radius*scale
+        p = 2 * r + 2 * π * r * arc / 360
+        perimeter = f"P = 2r + 2πr x {arc} / 360\n"
+        perimeter += f"P = 2r + 2πr x {arc/360:.1f}\n"
+        perimeter += f"πr = {π * r:.3f}\n"
+        perimeter += f"P = 2r + 2 x {π * r:.3f} x {arc/360:.1f}\n"
+        perimeter += f"P = 2 x {r} + 2 x {π * r:.3f} x {arc/360:.1f}\n"
+        perimeter += f"P = {2*r} + 2 x {π * r:.3f} x {arc/360:.1f}\n"
+        perimeter += f"P = {2*r} + {2 * π * r:.3f} x {arc/360:.1f}\n"
+        perimeter += f"P = {2*r} + {2 * π * r * arc/360:.3f}\n"
+        perimeter += f"P = {p:.3f}\n"
         print(perimeter)
-        canvas.create_text(*perimeterText, text=f"{perimeter:.3f}")
+        canvas.create_text(*perimeterText, text=f"{perimeter}", font=FONT)
     root = tk.Tk()
     root.title("arcs of circle")
     root.geometry(f"{w+2*margin}x{w+2*margin}")
@@ -46,15 +70,15 @@ def main():
     canvas.create_arc(*smallArcBoundingRectangle, start=0, extent=arc, fill="cyan")
     canvas.pack()
 
-    canvas.create_text(baseRadiusText, text=f"{radius*scale}")
-    canvas.create_text(radiusText, text=f"{radius*scale}")
-    canvas.create_text(*arcText, text=f"{arc}")
+    canvas.create_text(baseRadiusText, text=f"r = {radius*scale}", font=SMALL_FONT)
+    canvas.create_text(radiusText, text=f"r = {radius*scale}", font=SMALL_FONT)
+    canvas.create_text(*arcText, text=f"{arc}", font=SMALL_FONT)
     pfn1 = partial(printArea, arc)
-    button = tk.Button(canvas, text="Area", command=pfn1)
-    button.place(x=slot1, y=w-2*margin)
+    button = tk.Button(canvas, text="Area", font=FONT, command=pfn1)
+    button.place(x=xslot1, y=yslot)
     pfn2 = partial(printPerimeter, arc)
-    button = tk.Button(canvas, text="Perimeter", command=pfn2)
-    button.place(x=slot3, y=w-2*margin)
+    button = tk.Button(canvas, text="Perimeter", font=FONT, command=pfn2)
+    button.place(x=xslot3, y=yslot)
     canvas.pack()
 
     root.mainloop()
