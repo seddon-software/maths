@@ -1,6 +1,7 @@
 
-f1 = "1/4"
-f2 = "1/6"
+f1 = "5 3/4"
+f2 = "2 5/8"
+op = "-"
 
 import tkinter as tk
 import math
