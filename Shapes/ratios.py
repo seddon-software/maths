@@ -1,7 +1,7 @@
 a = 5
-b = 2
-c = 8
-d = 3
+b = 4
+c = 9
+d = 2
 item1 = a * c
 item2 = b * c
 newItem1 = a * d
@@ -19,7 +19,7 @@ TOP = 50
 
 def drawBoxes(canvas, baseX, baseY, n, color, step):
     ystep = 26
-    for n, x0 in enumerate(range(baseX, baseX+n*step, step)):
+    for n, x0 in enumerate(np.arange(baseX, baseX+n*step, step)):
         x1 = x0 + step
         y0 = baseY
         y1 = y0 + ystep
@@ -31,8 +31,8 @@ def create_text(canvas, x, y, text, anchor, font):
 
 i = max(item1, item2)
 height = 800
-step1 = int(height / i)
-step2 = int(height * item1 / (i * item2))
+step1 = height / i
+step2 = height * item1 / (i * item2)
 
 def main():    
     def solution():

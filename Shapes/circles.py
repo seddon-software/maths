@@ -1,4 +1,4 @@
-radius = 3.7           # change this
+radius = 3.9           # change this
 arc = 180               # change this
 
 #############################################################
@@ -7,6 +7,7 @@ import numpy as np
 from numpy import pi as π
 from functools import partial
 
+π = 3.14
 scale = .02
 radius = radius/scale
 margin = 10
