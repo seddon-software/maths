@@ -4,3 +4,6 @@ Show with a solid pyramid along with its net
 Show with a solid 3D prism along with its unfolded net with corresponding colors.  Make sure the net is connected
 Use a Qt app to show how to add 2/3 and 3/8 in stages.  Reveal one stage at a time. Use a button to move between stages.  Always show old stages. Use generators.
 Use a Qt app to show how ratios work
+
+
+Write a Qt app that shows all posible arrangements of the 12 pentominoes in a 6 by 10 grid
