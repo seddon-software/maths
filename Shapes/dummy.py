@@ -17,8 +17,10 @@ def main():
     root.title("ratios")
     root.geometry(f"600x400")
 
+    canvas = tk.Canvas(root, width=w+4*margin, height=w+4*margin)
+
     frame = tk.Frame(root)
-#    canvas.pack()
+    canvas.pack()
 
     root.mainloop()
 
