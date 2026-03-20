@@ -1,4 +1,4 @@
-percent = 25
+percent = 33.33333
 
 # Import libraries
 from matplotlib import pyplot as plt
