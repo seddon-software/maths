@@ -1,10 +1,10 @@
-a = 7
-b = 4
-c = 9
-d = 2
-item1 = a * c
-item2 = b * c
-newItem1 = a * d
+ratio = [7, 4]
+a, b = ratio
+factor1 = 9
+new_factor = 2
+boxes1 = a * factor1
+boxes2 = b * factor1
+new_boxes1 = a * new_factor
 name1 = "George"
 name2 = "Peter"
 
@@ -30,62 +30,58 @@ def drawBoxes(canvas, baseX, baseY, n, color, step):
 def create_text(canvas, x, y, text, anchor, font):
     return canvas.create_text(x, y, text=text, anchor=anchor, font=font)
 
-i = max(item1, item2)
+i = max(boxes1, boxes2)
 height = 800
 width = 2*height
 w = 0.75 * width
 step1 = int(w / i)
-step2 = step1 * item1 / item2
-print(step1, step2)
+step2 = step1 * boxes1 / boxes2
 
 def main():    
-    def solution():
-        nonlocal text, canvas
+    def solution(canvas):
         finish = False
         try:
             content = next(g)
             eval(content)
         except StopIteration as e:
             pass
-
+    gcd = math.gcd(boxes1, boxes2)
+    new_boxes2 = new_boxes1 * boxes2 / boxes1
+    texts = [f"{name1} has {boxes1} yellow boxes",
+             None,
+             f"{name2} has {boxes2} yellow boxes",
+             None,
+             f"{name1} paints {new_boxes1} boxes cyan",
+             None,
+             f"{name2} paints boxes cyan in the same ratio",
+             f"How many boxes does {name2} have to paint?",
+             f"ratio is {boxes1}:{boxes2}\\n",
+             f"What is the GCD of {boxes1} and {boxes2}?",
+             f"The GCD of {boxes1} and {boxes2} = {gcd}",
+             f"What is {boxes1}/{gcd}?",
+             f"{boxes1}/{gcd} = {boxes1/gcd:.0f}",
+             f"What is {boxes2}/{gcd}?",
+             f"{boxes2}/{gcd} = {boxes2/gcd:.0f}",
+             f"ratio is {boxes1}:{boxes2} = {boxes1/gcd:.0f}:{boxes2/gcd:.0f}",
+             f"ratio is {boxes1}:{boxes2} = {boxes1/gcd:.0f}:{boxes2/gcd:.0f} = {new_boxes1}:{new_boxes2:.0f}",
+             None,
+             f"\\nFinished"]
+    boxes = [f'drawBoxes(canvas, LEFT, {TOP}, {boxes1}, "yellow", {step1})',
+             f'drawBoxes(canvas, LEFT, 2*TOP, {boxes2}, "yellow", {step2})',
+             f'drawBoxes(canvas, LEFT, TOP, {new_boxes1}, "cyan", {step1})',
+             f'drawBoxes(canvas, LEFT, 2*TOP, {new_boxes2}, "cyan", {step2})']
     def generator():
-        text = f"{name1} has {item1} yellow boxes\\n"
-        yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
-        yield f'drawBoxes(canvas, LEFT, TOP, item1, "yellow", {step1})'
-        text += f"{name2} has {item2} yellow boxes\\n"
-        yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
-        yield f'drawBoxes(canvas, LEFT, 2*TOP, item2, "yellow", {step2})'
-        text += f"{name1} paints {newItem1} boxes cyan\\n"
-        yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
-        yield f'drawBoxes(canvas, LEFT, TOP, newItem1, "cyan", {step1})'
-        text += f"{name2} paints boxes cyan in the same ratio\\n"
-        yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
-        text += f"How many boxes does {name2} have to paint?\\n"
-        yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
-        text += f"ratio is {item1}:{item2}\\n"
-        yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
-        text += f"What is the GCD of {item1} and {item2}?\\n"
-        yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
-        gcd = math.gcd(item1, item2)
-        text += f"The GCD of {item1} and {item2} = {gcd}\\n"
-        yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
-        text += f"What is {item1}/{gcd}?\\n"
-        yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
-        text += f"{item1}/{gcd} = {item1/gcd:.0f}\\n"
-        yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
-        text += f"What is {item2}/{gcd}?\\n"
-        yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
-        text += f"{item2}/{gcd} = {item2/gcd:.0f}\\n"
-        yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
-        text += f"ratio is {item1}:{item2} = {item1/gcd:.0f}:{item2/gcd:.0f}\\n"
-        yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
-        newItem2 = newItem1 * item2 / item1
-        text += f"ratio is {item1}:{item2} = {item1/gcd:.0f}:{item2/gcd:.0f} = {newItem1}:{newItem2:.0f}\\n"
-        yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
-        yield f'drawBoxes(canvas, LEFT, 2*TOP, {newItem2}, "cyan", {step2})'
-        text += f"\\nFinished\\n"
-        yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
-        return
+        texts.reverse()
+        boxes.reverse()
+        text = ""
+        while texts:
+            t = texts.pop()
+            if t == None:
+                yield boxes.pop()
+                continue
+            text += f"{t}\\n"
+            yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
+        root.destroy()
 
     margin = 10
     root = tk.Tk()
@@ -94,10 +90,11 @@ def main():
     canvas = tk.Canvas(root, width=width, height=height)
     text = canvas.create_text(0, 0, text="", font="Arial 16")
 
-    button = tk.Button(canvas, text="click", command=solution)
-    button.pack()
+    pfn = partial(solution, canvas)
+    button = tk.Button(canvas, text="click", anchor="nw", command=pfn)
     canvas.create_window(RIGHT, TOP, window=button)
     canvas.pack()
+    button.place(x=width-10*margin, y=TOP)
 
     g = generator()
     root.mainloop()
