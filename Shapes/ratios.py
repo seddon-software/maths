@@ -1,4 +1,4 @@
-a = 5
+a = 7
 b = 4
 c = 9
 d = 2
@@ -12,6 +12,7 @@ name2 = "Peter"
 import tkinter as tk
 import numpy as np
 from functools import partial
+import math
 
 LEFT = 50
 RIGHT = 1000
@@ -31,8 +32,11 @@ def create_text(canvas, x, y, text, anchor, font):
 
 i = max(item1, item2)
 height = 800
-step1 = height / i
-step2 = height * item1 / (i * item2)
+width = 2*height
+w = 0.75 * width
+step1 = int(w / i)
+step2 = step1 * item1 / item2
+print(step1, step2)
 
 def main():    
     def solution():
@@ -45,35 +49,40 @@ def main():
             pass
 
     def generator():
-        text = f"{name1} is {item1}\\n"
+        text = f"{name1} has {item1} yellow boxes\\n"
         yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
         yield f'drawBoxes(canvas, LEFT, TOP, item1, "yellow", {step1})'
-        text += f"{name2} is {item2}\\n"
+        text += f"{name2} has {item2} yellow boxes\\n"
         yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
         yield f'drawBoxes(canvas, LEFT, 2*TOP, item2, "yellow", {step2})'
-        text += f"{name1} becomes {newItem1}\\n"
+        text += f"{name1} paints {newItem1} boxes cyan\\n"
         yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
         yield f'drawBoxes(canvas, LEFT, TOP, newItem1, "cyan", {step1})'
+        text += f"{name2} paints boxes cyan in the same ratio\\n"
+        yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
+        text += f"How many boxes does {name2} have to paint?\\n"
+        yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
         text += f"ratio is {item1}:{item2}\\n"
         yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
-        text += f"ratio is {item1}:{item2} = {item1} / {item2}\\n"
+        text += f"What is the GCD of {item1} and {item2}?\\n"
         yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
-        item2B = item2*newItem1//item1
-        text += f"ratio is {item1}:{item2} = {item1} / {item2} = {newItem1} / ???\\n"
+        gcd = math.gcd(item1, item2)
+        text += f"The GCD of {item1} and {item2} = {gcd}\\n"
         yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
-        text += f"??? =  {newItem1} ÷ ({item1}/{item2})\\n"
+        text += f"What is {item1}/{gcd}?\\n"
         yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
-        text += f"??? =  {newItem1} * {item2} ÷ {item1}\\n"
+        text += f"{item1}/{gcd} = {item1/gcd:.0f}\\n"
         yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
-        text += f"??? = {item2 * newItem1} / {item1}\\n"
+        text += f"What is {item2}/{gcd}?\\n"
         yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
-        text += f"??? = {item2 * newItem1 // item1}\\n"
+        text += f"{item2}/{gcd} = {item2/gcd:.0f}\\n"
         yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
-        text += f"equivalent ratio is {newItem1}:???\\n"
+        text += f"ratio is {item1}:{item2} = {item1/gcd:.0f}:{item2/gcd:.0f}\\n"
         yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
-        text += f"equivalent ratio is {newItem1}:{item2B}\\n"
+        newItem2 = newItem1 * item2 / item1
+        text += f"ratio is {item1}:{item2} = {item1/gcd:.0f}:{item2/gcd:.0f} = {newItem1}:{newItem2:.0f}\\n"
         yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
-        yield f'drawBoxes(canvas, LEFT, 2*TOP, {item2B}, "cyan", {step2})'
+        yield f'drawBoxes(canvas, LEFT, 2*TOP, {newItem2}, "cyan", {step2})'
         text += f"\\nFinished\\n"
         yield f'create_text(canvas, LEFT, 4*TOP, text="{text}", anchor="nw", font="Arial 18")'
         return
@@ -81,7 +90,6 @@ def main():
     margin = 10
     root = tk.Tk()
     root.title("ratios")
-    width = 2*height
     root.geometry(f"{width}x{height}")
     canvas = tk.Canvas(root, width=width, height=height)
     text = canvas.create_text(0, 0, text="", font="Arial 16")

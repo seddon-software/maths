@@ -1,5 +1,5 @@
 radius = 3.9           # change this
-arc = 270               # change this
+arc = 160               # change this
 
 #############################################################
 import tkinter as tk
@@ -38,9 +38,9 @@ def main():
         canvas.delete(perimeter_id)
         r = radius*scale
         area = "A = θ/360.πr².\n"
-        area += f"A = {arc/360}.πr².\n"
+        area += f"A = {arc/360:.3f}.πr².\n"
         area += f"r² = {r}x{r} = {r**2:.3f}\n"
-        area += f"A = π x {r**2:.3f} x {arc/360}\n" 
+        area += f"A = π x {r**2:.3f} x {arc/360:.3f}\n" 
         area += f"A = π x {r**2 * arc/360:.3f}\n" 
         area += f"A = {π * r**2 * arc / 360:.3f}"
         area_id = canvas.create_text(*areaText, text=area, font=FONT)
