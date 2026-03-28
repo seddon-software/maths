@@ -1,5 +1,5 @@
-radius = 3.9           # change this
-arc = 160               # change this
+radius = 3.0           # change this
+arc = 90               # change this
 
 #############################################################
 import tkinter as tk

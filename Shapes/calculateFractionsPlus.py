@@ -1,5 +1,5 @@
 # fractions only
-f1 = "3/4"
+f1 = "3/7"
 f2 = "5/9"
 
 import tkinter as tk

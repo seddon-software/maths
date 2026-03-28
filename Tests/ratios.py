@@ -1,9 +1,21 @@
 import random
-import signal
-import time, os
+import time
+import os
+import platform
 
-def timeout_handler(signum, frame):
-    raise TimeoutError
+IS_WINDOWS = platform.system() == "Windows"
+
+# Only use signal on non-Windows systems
+if not IS_WINDOWS:
+    import signal
+
+    def timeout_handler(signum, frame):
+        raise TimeoutError
+
+    signal.signal(signal.SIGALRM, timeout_handler)
+
+def clear_screen():
+    os.system("cls" if IS_WINDOWS else "clear")
 
 names = ["Alex", "Sam", "Jordan", "Taylor", "Chris"]
 items = ["sweets", "stickers", "coins", "marbles", "football cards"]
@@ -43,35 +55,52 @@ def quiz():
     print("You have 20 seconds to answer.")
     print("Press 'q' then Enter to quit.\n")
 
-    signal.signal(signal.SIGALRM, timeout_handler)
-
     while True:
         time.sleep(2)
-        os.system("clear")
+        clear_screen()
         question, answer = generate_question()
 
         print("⏱️ Go!\n")
 
         try:
-            signal.alarm(20)
-            user_input = input(f"{question}\n💨 > ")
-            signal.alarm(0)
+            if IS_WINDOWS:
+                # Windows: measure time
+                start = time.time()
+                user_input = input(f"{question}\n💨 > ")
+                elapsed = time.time() - start
 
-            if user_input.lower() == "q":
-                break
+                if user_input.lower() == "q":
+                    break
 
+                total += 1
+
+                if elapsed > 20:
+                    print(f"\n⏰ Too slow! ({elapsed:.1f}s) Answer = {answer}\n")
+                    continue
+
+            else:
+                # Linux/macOS: real timeout
+                signal.alarm(20)
+                user_input = input(f"{question}\n💨 > ")
+                signal.alarm(0)
+
+                if user_input.lower() == "q":
+                    break
+
+                total += 1
+
+        except TimeoutError:
             total += 1
+            print(f"\n⏰ Time’s up! Answer = {answer}\n")
+            continue
 
+        # Check answer
+        try:
             if int(user_input) == answer:
                 print("🔥 Correct!\n")
                 correct += 1
             else:
                 print(f"❌ Not quite! Answer = {answer}\n")
-
-        except TimeoutError:
-            total += 1
-            print(f"\n⏰ Time’s up! Answer = {answer}\n")
-
         except ValueError:
             print("⚠️ Numbers only!\n")
 
@@ -86,3 +115,4 @@ def quiz():
 
 if __name__ == "__main__":
     quiz()
+    

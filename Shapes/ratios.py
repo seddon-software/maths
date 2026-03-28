@@ -1,7 +1,7 @@
-ratio = [7, 4]
+ratio = [9, 7]
 a, b = ratio
-factor1 = 9
-new_factor = 2
+factor1 = 8
+new_factor = 4
 boxes1 = a * factor1
 boxes2 = b * factor1
 new_boxes1 = a * new_factor
