@@ -14,7 +14,7 @@ def quiz():
     total = 0
     correct = 0
 
-    print("Mixed Times Tables Quiz (2–9)")
+    print("Times Tables Quiz (2–9)")
     print("You have 10 seconds per question. Type 'q' to exit.\n")
 
     signal.signal(signal.SIGALRM, timeout_handler)
