@@ -24,3 +24,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "TestTables"
 include(":app")
+include(":app")
