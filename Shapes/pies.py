@@ -3,8 +3,8 @@ from tkinter import Canvas
 import math
 import numpy as np
 
-N = 37
-D = 27
+N = 55
+D = 36
 
 w = 1200
 h = 800

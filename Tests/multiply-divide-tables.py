@@ -36,7 +36,7 @@ def quiz():
     print("You have 10 seconds per question. Type 'q' to exit.\n")
 
     while True:
-        time.sleep(2)
+        time.sleep(5)
         clear_screen()
         question, answer = generate_question()
 
