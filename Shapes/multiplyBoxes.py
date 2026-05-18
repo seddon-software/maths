@@ -1,5 +1,3 @@
-n1 = 736
-n2 = 451
 
 #############################################################
 import tkinter as tk
@@ -8,14 +6,6 @@ from numpy import pi as π
 from functools import partial
 FONT = "Arial 32"
 
-w = 800
-margin = 10
-space = 100
-slot1 = 0.2*w
-slot2 = 0.45*w
-slot3 = 0.55*w
-slot4 = 0.9*w
-π = 3.14
 
 class Number:
     def __init__(self, n):
@@ -29,7 +19,7 @@ class Number:
         return self.value
        
 class Box:
-    def __init__(self, x1, y1, row, col):
+    def __init__(self, x1, y1, row, col, space):
         self.x1 = x1
         self.y1 = y1
         self.number1 = row
@@ -41,7 +31,7 @@ class Box:
         canvas.create_line(self.x1, self.y1, self.x1, self.y2, width=2)
         canvas.create_line(self.x2, self.y2, self.x2, self.y1, width=2)
         canvas.create_line(self.x2, self.y2, self.x1, self.y2, width=2)
-    def drawInside(self, canvas):
+    def drawInside(self, canvas, space):
         # height = rows * space 
         # width  = cols * space
         rows = self.number1.size()      # 3
@@ -74,26 +64,35 @@ class Box:
                 # internal numbers
                 canvas.create_text(x1+space/4, y1+space/2, text=f"{n1*n2//10}", font=FONT)
                 canvas.create_text(x1+3*space/4, y1+space/2, text=f"{n1*n2%10}", font=FONT)
-    def printResult(self, canvas):
+    def printResult(self, canvas, space):
         n1 = self.number1.getValue()
         n2 = self.number2.getValue()
         rows = self.number1.size()
         cols = self.number2.size()
         canvas.create_text(self.x1+0.5*space, self.y1+(rows+0.5)*space, text=f"{n1*n2}", font=FONT)
 
-def main():
+def main(n1, n2):
+    w = 800
+    margin = 10
+    space = 100
+    slot1 = 0.2*w
+    slot2 = 0.45*w
+    slot3 = 0.55*w
+    slot4 = 0.9*w
+    π = 3.14
     root = tk.Tk()
     root.title("Multiply")
     root.geometry(f"{w+2*margin}x{w+2*margin}")
     canvas = tk.Canvas(root, width=w+4*margin, height=w+4*margin)
     number1= Number(n1)
     number2= Number(n2)
-    box = Box(250, 100, row=number1, col=number2)
+    box = Box(250, 100, row=number1, col=number2, space=space)
     box.drawOutline(canvas)
-    box.drawInside(canvas)
-    box.printResult(canvas)
+    box.drawInside(canvas, space=space)
+    box.printResult(canvas, space=space)
     canvas.pack()
     root.mainloop()
 
-main()
+if __name__ == "__main__":
+    main(n1 = 27, n2 = 27)
 

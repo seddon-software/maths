@@ -4,8 +4,9 @@ import os
 import platform
 
 IS_WINDOWS = platform.system() == "Windows"
+TIMEOUT = 20
 
-# Only import signal on non-Windows systems18
+# Only import signal on non-Windows systems
 if not IS_WINDOWS:
     import signal
 
@@ -18,23 +19,24 @@ def clear_screen():
     os.system("cls" if IS_WINDOWS else "clear")
 
 def generate_question():
-    if random.choice(["mul", "div"]) == "mul":
-        a = random.randint(2, 9)
-        b = random.randint(2, 9)
-        return f"{a} x {b}", a * b
+    if random.choices(["mul", "div"], weights=[1, 1])[0] == "mul":
+        a = random.randint(6, 9)
+        b = random.randint(6, 9)
+        result = a * b
+        return f"{a} x {b}", result
     else:
-        b = random.randint(2, 9)
-        result = random.randint(2, 9)
-        a = b * result
-        return f"{a} ÷ {b}", result
+        a = random.randint(6, 9)
+        b = random.randint(6, 9)
+        result = a * b
+        return f"{result} ÷ {a}", b
 
 def quiz():
     total = 0
     correct = 0
-
-    print("Mixed Times Tables Quiz (2–9)")
-    print("You have 10 seconds per question. Type 'q' to exit.\n")
-
+    os.system("clear")
+    print("Mixed Times Tables Quiz")
+    print(f"You have {TIMEOUT} seconds per question. Type 'q' to exit.\n")
+    time.sleep(TIMEOUT)
     while True:
         time.sleep(2)
         clear_screen()
@@ -52,13 +54,13 @@ def quiz():
 
                 total += 1
 
-                if elapsed > 10:
+                if elapsed > TIMEOUT:
                     print(f"\n⏰ Too slow! ({elapsed:.1f}s) Answer = {answer}\n")
                     continue
 
             else:
                 # Linux/macOS: real timeout
-                signal.alarm(10)
+                signal.alarm(TIMEOUT)
                 user_input = input(f"{question} = ")
                 signal.alarm(0)
 

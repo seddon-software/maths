@@ -1,6 +1,6 @@
 # fractions only
-f1 = "7/9"
-f2 = "3/4"
+f1 = "1/11"
+f2 = "4/5"
 
 import tkinter as tk
 import math

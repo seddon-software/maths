@@ -1,4 +1,4 @@
-ratio = [9, 7]
+ratio = [10, 3]
 a, b = ratio
 factor1 = 8
 new_factor = 4

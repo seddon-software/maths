@@ -6,7 +6,7 @@ def timeout_handler(signum, frame):
     raise TimeoutError
 
 def generate_question():
-        a = random.randint(2, 9)
+        a = random.randint(7, 9)
         b = random.randint(2, 9)
         return f"{a} x {b}", a * b
 
