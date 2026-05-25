@@ -71,7 +71,7 @@ class Box:
         cols = self.number2.size()
         canvas.create_text(self.x1+0.5*space, self.y1+(rows+0.5)*space, text=f"{n1*n2}", font=FONT)
 
-def main(n1, n2):
+def main(side, top):
     w = 800
     margin = 10
     space = 100
@@ -84,8 +84,8 @@ def main(n1, n2):
     root.title("Multiply")
     root.geometry(f"{w+2*margin}x{w+2*margin}")
     canvas = tk.Canvas(root, width=w+4*margin, height=w+4*margin)
-    number1= Number(n1)
-    number2= Number(n2)
+    number1= Number(side)
+    number2= Number(top)
     box = Box(250, 100, row=number1, col=number2, space=space)
     box.drawOutline(canvas)
     box.drawInside(canvas, space=space)
@@ -94,5 +94,5 @@ def main(n1, n2):
     root.mainloop()
 
 if __name__ == "__main__":
-    main(n1 = 27, n2 = 27)
+    main(side = 187, top = 34969)
 

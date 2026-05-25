@@ -1,7 +1,3 @@
-n1 = 20
-n2 = 50
-
-########################################
 import tkinter as tk
 import numpy as np
 from functools import partial
@@ -9,7 +5,7 @@ import math
 
 
 
-def main():    
+def main(n1, n2):    
     root = tk.Tk()
     root.title("ratios")
     root.geometry(f"1200x600")
@@ -32,5 +28,7 @@ def main():
     root.mainloop()
 
 
-main()
+########################################
+
+main(n1=12, n2=21)
 
