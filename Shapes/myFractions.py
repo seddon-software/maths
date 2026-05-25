@@ -1,5 +1,5 @@
 # fractions only
-f1 = "7/10"
+f1 = "1/10"
 f2 = "3/4"
 
 import tkinter as tk
@@ -7,6 +7,16 @@ import math
 from fractions import Fraction
 from math import gcd
 
+def color_text(widget, target, tag_name, **tag_options):
+    # Create/update tag style
+    widget.tag_config(tag_name, **tag_options)
+    start = "1.0"
+    while True:
+        pos = widget.search(target, start, stopindex="end")
+        if not pos: break
+        end = f"{pos} lineend"
+        widget.tag_add(tag_name, pos, end)
+        start = end
 
 class FractionCalculator:
     def __init__(self, root):
@@ -32,7 +42,6 @@ class FractionCalculator:
         self.show_stage()
     
     def show_stage(self):
-        global content
         self.text_display.delete(1.0, tk.END)
         content = ""
         
@@ -106,20 +115,10 @@ class FractionCalculator:
             content += f"Finished\n"
 
         self.text_display.insert(1.0, content, "red")
+        color_text(self.text_display, "Step", "red_tag", foreground="red")
         self.text_display.config(state=tk.DISABLED)
     
     def show_next_stage(self):
-        def color_text(widget, target, tag_name, **tag_options):
-            # Create/update tag style
-            widget.tag_config(tag_name, **tag_options)
-            start = "1.0"
-            while True:
-                pos = widget.search(target, start, stopindex="end")
-                if not pos: break
-                end = f"{pos} lineend"
-                widget.tag_add(tag_name, pos, end)
-                start = end
-        global content
         if self.stage < 14:
             self.stage += 1
             self.text_display.config(state=tk.NORMAL)
