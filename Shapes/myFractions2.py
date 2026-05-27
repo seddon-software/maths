@@ -34,7 +34,7 @@ class Pair:
         self.new_numerators = [n1.get_new_numerator(n2), n2.get_new_numerator(n1)]
         self.values = [n1.getValue(),n2.getValue()]
 
-class FractionCalculator():
+class Stages():
     def __init__(self, root, f1, f2):
         self.root = root
         self.root.title("Fraction Addition Calculator")
@@ -105,6 +105,7 @@ class FractionCalculator():
                 content += f"\nStep 6: Normalise fraction\n"
                 content += f"{reducedFraction} = 1 + ???/{reduced_denominator}\n"
             else:
+                self.stage += 1
                 content += f"\n"
         if self.stage >= 13:
             if reduced_numerator > reduced_denominator:
@@ -124,6 +125,6 @@ class FractionCalculator():
             color_text(self.text_display, "Finished", "green_tag", foreground="green")
 
 root = tk.Tk()
-app = FractionCalculator(root, "1/10", "3/4")
+app = Stages(root, "9/10", "1/4")
 root.mainloop()
 
