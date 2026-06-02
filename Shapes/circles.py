@@ -1,5 +1,5 @@
-radius = 2.9           # change this
-arc = 360 - 0.01              # change this
+radius = 5           # change this
+arc = 180              # change this
 
 #############################################################
 import tkinter as tk
@@ -12,8 +12,8 @@ scale = .02
 radius = radius/scale
 margin = 10
 w = int(5 * radius) 
-FONT = "Arial 24"
-SMALL_FONT = "Arial 16"
+FONT = "Arial 14"
+SMALL_FONT = "Arial 10"
 
 xslot1 = 0.05*w
 xslot2 = 0.8*w

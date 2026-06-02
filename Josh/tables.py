@@ -1,49 +1,74 @@
 import random
-import signal
-import time, os
+import time
+import os
+import platform
 
-def timeout_handler(signum, frame):
-    raise TimeoutError
+IS_WINDOWS = platform.system() == "Windows"
+TIMEOUT = 20
 
-def generate_question():
-        a = random.randint(7, 9)
-        b = random.randint(2, 9)
-        return f"{a} x {b}", a * b
+# Only import signal on non-Windows systems
+if not IS_WINDOWS:
+    import signal
 
-def quiz():
-    total = 0
-    correct = 0
-
-    print("Times Tables Quiz (2–9)")
-    print("You have 10 seconds per question. Type 'q' to exit.\n")
+    def timeout_handler(signum, frame):
+        raise TimeoutError
 
     signal.signal(signal.SIGALRM, timeout_handler)
 
+def clear_screen():
+    os.system("clear")
+
+def generate_question(count):
+    if random.choices(["mul", "div"], weights=[1, 1])[0] == "mul":
+        a = random.randint(2, 9)
+        b = random.randint(2, 9)
+        result = a * b
+        return f"{count}:  {a} x {b}", result
+    else:
+        a = random.randint(2, 9)
+        b = random.randint(2, 9)
+        result = a * b
+        return f"{count}:  {result} ÷ {a}", b
+
+def quiz():
+    count = 0
+    total = 0
+    correct = 0
+    os.system("clear")
+    print("Mixed Times Tables Quiz")
+    print(f"You have {TIMEOUT} seconds per question. Type 'q' to exit.\n")
+    time.sleep(TIMEOUT)
     while True:
+        count += 1
         time.sleep(2)
-        os.system("clear")
-        question, answer = generate_question()
+        clear_screen()
+        question, answer = generate_question(count)
 
         try:
-            signal.alarm(10)  # start 10-second timer
+            signal.alarm(TIMEOUT)
             user_input = input(f"{question} = ")
-            signal.alarm(0)  # cancel timer
+            signal.alarm(0)
 
             if user_input.lower() == "q":
                 break
 
             total += 1
+        except TimeoutError:
+            total += 1
+            print(f"\n⏰ Time's up! Answer = {answer}\n")
+            continue
 
+        except ValueError:
+            print("⚠️ Please enter a number.\n")
+            continue
+
+        # Check answer
+        try:
             if int(user_input) == answer:
                 print("✅ Correct!\n")
                 correct += 1
             else:
                 print(f"❌ Wrong! Answer = {answer}\n")
-
-        except TimeoutError:
-            total += 1
-            print(f"\n⏰ Time's up! Answer = {answer}\n")
-
         except ValueError:
             print("⚠️ Please enter a number.\n")
 

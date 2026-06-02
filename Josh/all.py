@@ -44,7 +44,8 @@ def generate_question():
         f2 = Fraction(random.randint(1,9), random.randint(1,9))
         op = random.choice(["+", "-", "*", "/"])
         result = eval(f"f1 {op} f2")
-        return f"{f1} {op} {f2} = ? (a/b or mixed)", result, "fraction"
+        if op == "/": op = "÷"
+        return f"{f1} {op} {f2} = ?", result, "fraction"
 
     # PERCENTAGES
     elif q_type == "percent":
@@ -83,7 +84,7 @@ def generate_question():
     # CIRCLE
     else:
         r = random.randint(1,10)
-        return f"Circle radius {r}. Area? (2dp)", round(math.pi*r*r,2), "float"
+        return f"Circle radius {r}. Area? (2 decimal places)", round(math.pi*r*r,2), "float"
 
 def quiz():
     total = 0
