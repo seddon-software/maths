@@ -1,19 +1,16 @@
 import random
+import signal
 import time
 import os
 import platform
 
-IS_WINDOWS = platform.system() == "Windows"
+
 TIMEOUT = 20
 
-# Only import signal on non-Windows systems
-if not IS_WINDOWS:
-    import signal
+def timeout_handler(signum, frame):
+    raise TimeoutError
 
-    def timeout_handler(signum, frame):
-        raise TimeoutError
-
-    signal.signal(signal.SIGALRM, timeout_handler)
+signal.signal(signal.SIGALRM, timeout_handler)
 
 def clear_screen():
     os.system("clear")

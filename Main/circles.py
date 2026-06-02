@@ -1,5 +1,5 @@
-radius = 5           # change this
-arc = 180              # change this
+radius = 20           # change this
+arc = 300              # change this
 
 #############################################################
 import tkinter as tk
@@ -8,7 +8,7 @@ from numpy import pi as π
 from functools import partial
 
 π = 3.14
-scale = .02
+scale = radius/150
 radius = radius/scale
 margin = 10
 w = int(5 * radius) 
@@ -35,6 +35,7 @@ perimeter_id = None
 def main():
     def printArea(arc):
         global area_id, perimeter_id
+        canvas.delete(area_id)
         canvas.delete(perimeter_id)
         r = radius*scale
         area = "A = θ/360.πr².\n"
@@ -44,29 +45,45 @@ def main():
         area += f"A = π x {r**2 * arc/360:.3f}\n" 
         area += f"A = {π * r**2 * arc / 360:.3f}"
         area_id = canvas.create_text(*areaText, text=area, font=FONT)
+        print(area_id)
     def printPerimeter(arc):
         global area_id, perimeter_id
         canvas.delete(area_id)
+        canvas.delete(perimeter_id)
         r = radius*scale
         p = 2 * r + 2 * π * r * arc / 360
-        perimeter = f"P = 2r + 2πr x {arc} / 360\n"
-        perimeter += f"P = 2r + 2πr x {arc/360:.1f}\n"
-        perimeter += f"πr = {π * r:.3f}\n"
-        perimeter += f"P = 2r + 2 x {π * r:.3f} x {arc/360:.1f}\n"
-        perimeter += f"P = 2 x {r} + 2 x {π * r:.3f} x {arc/360:.1f}\n"
-        perimeter += f"P = {2*r} + 2 x {π * r:.3f} x {arc/360:.1f}\n"
-        perimeter += f"P = {2*r} + {2 * π * r:.3f} x {arc/360:.1f}\n"
-        perimeter += f"P = {2*r} + {2 * π * r * arc/360:.3f}\n"
-        perimeter += f"P = {p:.3f}\n"
-        print(perimeter)
-        canvas.create_text(*perimeterText, text=f"{perimeter}", font=FONT)
+        if arc == 360:
+            perimeter = f"perimeter = 2πr\n"
+            perimeter += f"πr = {π * r:.3f}\n"
+            perimeter += f"2πr = 2 x {π * r:.3f}\n"
+            perimeter += f"2πr = {p:.3f}\n"
+            #print(perimeter)
+            perimeter_id = canvas.create_text(*perimeterText, text=f"{perimeter}", font=FONT)
+            print(perimeter_id)
+        else:
+            perimeter = f"perimeter = 2r + 2πr x {arc} / 360\n"
+            perimeter += f"extent = {arc} / 360 = {arc/360:.2f}\n"
+            perimeter += f"P = 2r + 2πr x {arc/360:.2f}\n"
+            perimeter += f"πr = {π * r:.3f}\n"
+            perimeter += f"P = 2r + 2 x {π * r:.3f} x {arc/360:.2f}\n"
+            perimeter += f"P = 2 x {r} + 2 x {π * r:.3f} x {arc/360:.2f}\n"
+            perimeter += f"P = {2*r} + 2 x {π * r:.3f} x {arc/360:.2f}\n"
+            perimeter += f"P = {2*r} + {2 * π * r:.3f} x {arc/360:.2f}\n"
+            perimeter += f"P = {2*r} + {2 * π * r * arc/360:.3f}\n"
+            perimeter += f"P = {p:.3f}\n"
+            # print(perimeter)
+            perimeter_id = canvas.create_text(*perimeterText, text=f"{perimeter}", font=FONT)
+            print(perimeter_id)
     root = tk.Tk()
     root.title("arcs of circle")
     root.geometry(f"{w+2*margin}x{w+2*margin}")
 
     canvas = tk.Canvas(root, width=w+4*margin, height=w+4*margin)
     arcBoundingRectangle = np.array((margin, margin, margin+w, margin+w))
-    canvas.create_arc(*arcBoundingRectangle, start=0, extent=arc, fill="red")
+    if arc == 360:
+        canvas.create_oval(*arcBoundingRectangle, fill="red")
+    else:
+        canvas.create_arc(*arcBoundingRectangle, start=0, extent=arc, fill="red")
     smallArcBoundingRectangle = np.array((w/2-2*margin, w/2-2*margin, w/2+4*margin, w/2+4*margin))
     canvas.create_arc(*smallArcBoundingRectangle, start=0, extent=arc, fill="cyan")
     canvas.pack()
