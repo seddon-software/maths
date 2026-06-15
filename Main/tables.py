@@ -35,7 +35,7 @@ def quiz():
     print("Mixed Times Tables Quiz")
     print(f"You have {TIMEOUT} seconds per question. Type 'q' to exit.\n")
     time.sleep(TIMEOUT)
-    while True:
+    while count < 20:
         count += 1
         time.sleep(2)
         clear_screen()

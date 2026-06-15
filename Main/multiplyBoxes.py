@@ -94,5 +94,5 @@ def main(side, top):
     root.mainloop()
 
 if __name__ == "__main__":
-    main(side = 16, top = 82)
+    main(side = 652, top = 407)
 

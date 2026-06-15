@@ -1,5 +1,5 @@
-hh = 8.2
-ww = 1.6
+hh = 8.3
+ww = 4.9
 
 ####################################################
 import tkinter as tk
@@ -49,8 +49,8 @@ def main():
     )
     canvas.create_polygon(*points, fill='cyan')
     canvas.create_line(topX, topY, topX, baseY, dash=(10,10))
-    canvas.create_text(*middleText, text=f"{height*scale}", font=getFont())
-    canvas.create_text(*baseText, text=f"{width*scale}", font=getFont())
+    canvas.create_text(*middleText, text=f"{height*scale:2.1f}", font=getFont())
+    canvas.create_text(*baseText, text=f"{width*scale:2.1f}", font=getFont())
     pfn1 = partial(printArea, height, width)
     button = tk.Button(canvas, text="Area", command=pfn1)
     button.place(x=slot1, y=w-2*margin)
