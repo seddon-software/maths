@@ -5,7 +5,7 @@ import os
 import platform
 
 
-TIMEOUT = 20
+TIMEOUT = 18
 
 def timeout_handler(signum, frame):
     raise TimeoutError
