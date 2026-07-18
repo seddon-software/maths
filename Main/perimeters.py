@@ -8,7 +8,8 @@ def add_text(ax, x, y, text, rotation=0):
     ax.text(x, y, text,
             ha="center",
             va="center",
-            rotation=rotation)
+            rotation=rotation,
+            fontsize=16)
 
 
 def rectangle_semicircle():
