@@ -125,6 +125,6 @@ class Stages():
             color_text(self.text_display, "Finished", "green_tag", foreground="green")
 
 root = tk.Tk()
-app = Stages(root, "13/15", "1/2")
+app = Stages(root, "5/11", "5/7")
 root.mainloop()
 

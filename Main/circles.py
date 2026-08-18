@@ -1,5 +1,5 @@
-radius = 7.1           # change this
-arc = 144              # change this
+radius = 5.4           # change this
+arc = 45              # change this
 
 #############################################################
 import tkinter as tk
@@ -83,8 +83,8 @@ def main():
     canvas.create_arc(*smallArcBoundingRectangle, start=0, extent=arc, fill="cyan")
     canvas.pack()
 
-    canvas.create_text(baseRadiusText, text=f"r = {radius*scale}", font=BIG_FONT)
-    canvas.create_text(radiusText, text=f"r = {radius*scale}", font=BIG_FONT)
+    canvas.create_text(baseRadiusText, text=f"r = {radius*scale:0.1f}", font=BIG_FONT)
+    canvas.create_text(radiusText, text=f"r = {radius*scale:0.1f}", font=BIG_FONT)
     canvas.create_text(*arcText, text=f"{arc}", font=BIG_FONT)
     pfn1 = partial(printArea, arc)
     button = tk.Button(canvas, text="Area", font=FONT, command=pfn1)

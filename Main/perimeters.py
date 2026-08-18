@@ -1,8 +1,11 @@
 import matplotlib.pyplot as plt
-from matplotlib.patches import Arc
+#from matplotlib.patches import Arc
+from matplotlib.patches import Wedge
+from matplotlib.widgets import Button
 import random
 import math
 
+pi = 3.14
 
 def add_text(ax, x, y, text, rotation=0):
     ax.text(x, y, text,
@@ -12,53 +15,41 @@ def add_text(ax, x, y, text, rotation=0):
             fontsize=16)
 
 
-def rectangle_semicircle():
+def shapeA():
     w = random.randint(8, 14)
     d = random.choice([4, 6, 8])
 
-    radius = d / 2
+    r = d / 2
 
     fig, ax = plt.subplots(figsize=(7, 5))
+    xs = [0, w, w, 0, 0]
+    ys = [0, 0, d, d, 0]
 
-    # top line
-    ax.plot([w, 0], [d, d], "k")
-    # vertical from origin
-    ax.plot([0, 0], [0, d], "k")
-    # diameter
-    ax.plot([w, w], [d, 0], "k--")
-    # bottom -> semicircle -> top -> left
-    ax.plot([0, w],[0,0], "k")
+    ax.plot(xs, ys, "k", linewidth=2)
+    ax.fill(xs, ys, "lightblue", alpha = 0.3)
     ax.add_patch(
-        Arc((w, radius),
-            d,
-            d,
+        Wedge(
+            center=(w, r),
+            r=d/2,
             theta1=-90,
-            theta2=90)
+            theta2=90,
+            linewidth=2,
+            facecolor="lightblue",
+            edgecolor="black",
+            alpha=0.3
+        )
     )
-    # add_text(ax, w, 0, "w,0")
-    # add_text(ax, d, 0, "d,0")
-    # add_text(ax, w, d, "w,d")
-    # add_text(ax, d, d, "d,d")
-    # add_text(ax, 0, 0, "0,0")
-    # add_text(ax, 0, d, "0,d")
-    add_text(ax, w/2, -0.8,
-             f"{w} cm")
+    ax.plot([w, w], [0, d], color="white", linewidth=2)
+    ax.plot([w, w], [0, d], "k--", linewidth=2)
+    add_text(ax, w/2, -0.8, f"{w} cm")
+    add_text(ax, -0.8, d/2, f"{d} cm", 90)
 
-    add_text(ax, -0.8, d/2,
-             f"{d} cm",
-             90)
+    perimeter = (2*w + d + pi*r)
+    area = w*d + pi * r**2/2
+    return fig, ax, perimeter, area
 
-    perimeter = (
-        2 * w +
-        d +
-        math.pi * radius
-    )
-
-    return fig, ax, perimeter
-
-
-def l_shape():
-    m = 0.6
+def shapeB():
+    m = 0.3
     w = random.randint(12, 18)
     h = random.randint(8, 12)
     w1 = random.randint(2, w//2)
@@ -88,7 +79,8 @@ def l_shape():
 
     xs, ys = zip(*points)
     ax.plot(xs, ys, "k")
-
+    ax.fill(xs, ys, color="lightblue", alpha=0.5
+    )
     for i,p in enumerate(points):
         if i in [3, 9, 11]: continue
         p1 = points[i]
@@ -108,20 +100,21 @@ def l_shape():
             p[1] += m
         add_text(ax, *p, text)
     perimeter = 2 * (w + h + h1 + h2)
-    return fig, ax, perimeter
+    area = w*h - (w-w1-w2)*h1 - (w-w3-w4)*h2 
+    return fig, ax, perimeter, area
 
 
-def triangle_roof():
-    width = random.randint(8, 14)
-    wall_height = random.randint(4, 7)
-    sloping_side = random.randint(5, 8)
+def shapeC():
+    w = random.randint(8, 14)
+    h = random.randint(4, 7)
+    s = random.randint(5, 8)
 
     points = [
         (0, 0),
-        (width, 0),
-        (width, wall_height),
-        (width/2, wall_height + 3),
-        (0, wall_height),
+        (w, 0),
+        (w, h),
+        (w/2, h + 3),
+        (0, h),
         (0, 0)
     ]
 
@@ -129,32 +122,18 @@ def triangle_roof():
 
     xs, ys = zip(*points)
     ax.plot(xs, ys, "k")
+    ax.fill(xs, ys, color="lightblue", alpha=0.5)
 
-    add_text(ax, width/2, -0.8,
-             f"{width} cm")
-
-    add_text(ax, -0.8, wall_height/2,
-             f"{wall_height} cm",
-             90)
+    add_text(ax, w/2, -0.8, f"{w} cm")
+    add_text(ax, -0.8, h/2, f"{h} cm", 90)
 
     # Both sloping sides are equal
-    add_text(ax,
-             width/4,
-             wall_height+1.5,
-             f"{sloping_side} cm")
+    add_text(ax, w/4, h+1.5, f"{s} cm")
+    add_text(ax, 3*w/4, h+1.5, f"{s} cm")
 
-    add_text(ax,
-             3*width/4,
-             wall_height+1.5,
-             f"{sloping_side} cm")
-
-    perimeter = (
-        width +
-        2 * wall_height +
-        2 * sloping_side
-    )
-
-    return fig, ax, perimeter
+    perimeter = (w + 2*h + 2*s)
+    area = w*h + (s**2 - w**2/4)**0.5 / 2
+    return fig, ax, perimeter, area
 
 
 # -----------------------------
@@ -162,18 +141,19 @@ def triangle_roof():
 # -----------------------------
 
 shape = random.choice([
-    rectangle_semicircle,
-    l_shape,
-    triangle_roof
+    shapeA,
+    shapeB,
+    shapeC
 ])
 
-fig, ax, answer = shape()
+fig, ax, perimeter, area = shape()
 
 ax.set_aspect("equal")
 ax.axis("off")
 
 print()
 print("Teacher answer:")
-print(f"Perimeter = {answer:.4f} cm")
+print(f"Perimeter = {perimeter:.4f} cm")
+print(f"Area = {area:.4f} cm")
 
 plt.show()
