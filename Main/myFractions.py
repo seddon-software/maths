@@ -87,18 +87,22 @@ class Stages():
             content += f"{p.new_numerators[0]}/{d} + {p.new_numerators[1]}/{d} = {numerator}/{d}\n"
         if self.stage >= 9:
                 content += f"\nStep 5: Reduce fraction\n"
+                reduce = True
                 denominator = d
                 g = gcd(numerator, denominator)
-
                 reduced_numerator = numerator//g
                 reduced_denominator = denominator//g
 
                 reducedFraction = f"{reduced_numerator}/{reduced_denominator}"
-                content += f"{numerator}/{d} = ???\n"
+                if reduce: content += f"{numerator}/{d} = ???\n"
         if self.stage >= 10:
-                content += f"{numerator}/{d} = ???/{reduced_denominator}\n"
+                if g == 1:
+                    content += f"Can't reduce\n"
+                    reduce = False
+                else:
+                    content += f"{numerator}/{d} = ???/{reduced_denominator}\n"
         if self.stage >= 11:
-                content += f"{numerator}/{d} = {reducedFraction}\n"
+                if reduce: content += f"{numerator}/{d} = {reducedFraction}\n"
 
         if self.stage >= 12:
             if reduced_numerator > reduced_denominator:
@@ -125,6 +129,6 @@ class Stages():
             color_text(self.text_display, "Finished", "green_tag", foreground="green")
 
 root = tk.Tk()
-app = Stages(root, "5/11", "4/7")
+app = Stages(root, "5/8", "3/4")
 root.mainloop()
 
