@@ -1,7 +1,7 @@
 hh = 3
 ww = 8.2
-a = 3
-b = 7
+a = 3.2
+b = 6.7
 
 ####################################################
 import tkinter as tk
@@ -20,6 +20,7 @@ slot1 = leftX+b/2, 50+a/2
 bText = (leftX*0.8+b/2, topY+a*1.1)
 aText = (leftX*0.8, topY+a/2)
 legend = (leftX+b/4, topY+a*1.5)
+legend2 = (leftX+b/4, topY+a*1.75)
 buttonPlace = {"x": leftX+b/4, "y": topY+2*a}
 
 
@@ -44,10 +45,12 @@ def main():
         (leftX, topY),
         (leftX, topY+a)
     )
-    canvas.create_polygon(*points, fill='yellow')
+    canvas.create_polygon(*points, fill='light green')
     canvas.create_text(*bText, text=f"b={b*scale:.{precision}f}", font=getFont())
     canvas.create_text(*aText, text=f"a={a*scale:.{precision}f}", font=getFont())
     canvas.create_text(*legend, text="c² = a² + b²", font=getFont(24), anchor="w")
+    canvas.create_text(*legend2, text="c = √(a² + b²)", font=getFont(24), anchor="w")
+    
     
     pfn = partial(printHypotenuse, a, b)
     button = tk.Button(

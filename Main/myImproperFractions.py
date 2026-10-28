@@ -4,8 +4,8 @@ import math
 import numpy as np
 
 # display N/D in pies
-N = 31
-D = 7
+N = 17
+D = 5
 pies = N // D
 fraction = N - D * pies
 w = 1200
@@ -39,7 +39,7 @@ def on_draw_click():
             canvas.create_text(nn*(r+margin), 2.1*(r+margin), text=f"{(n+1)*D}/{D} = {n+1}", fill="blue", font=FONT_SIZE)
         else:
             draw_pie_chart(canvas, nn*(r+margin), r+margin, r, D, fraction)
-            canvas.create_text(nn*(r+margin), 2.1*(r+margin), text=f"{N}/{D} = {n+1} + {fraction}/{D}", fill="red", font=FONT_SIZE)
+            canvas.create_text(nn*(r+margin), 2.1*(r+margin), text=f"{N}/{D} = {n} + {fraction}/{D}", fill="red", font=FONT_SIZE)
 
 root = tk.Tk() 
 root.title("Improper Fractions")

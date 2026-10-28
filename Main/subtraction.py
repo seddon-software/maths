@@ -5,10 +5,10 @@ def generate_question():
     number1 = random.randint(100, 999)/1000
     number2 = random.randint(100, 999)/1000
     if number1 > number2:
-        question = f"What is {number1} - {number2}?"
+        question = f"What is {number1} - {number2}"
         answer = number1 - number2
     else:
-        question = f"What is {number2} - {number1}?"
+        question = f"What is {number2} - {number1}"
         answer = number2 - number1
     return question, round(answer, 2)
 
