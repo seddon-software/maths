@@ -42,5 +42,5 @@
     "workbench.startupEditor": "none",
     "workbench.editor.sharedViewState": true,
     "python-envs.defaultEnvManager": "ms-python.python:pyenv",
-    "terminal.integrated.fontSize": 40
+    "terminal.integrated.fontSize": 16
 }

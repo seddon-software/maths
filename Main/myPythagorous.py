@@ -1,5 +1,5 @@
-a = 3.2
-b = 6.7
+b = 16
+a = 15
 
 ####################################################
 import tkinter as tk
@@ -8,16 +8,13 @@ import numpy as np
 from functools import partial
 
 precision = 2
-scale = .01
+w = int(a + b)
+scale = w / 900 
 a = a/scale
 b = b/scale
 leftX = 200
-topY = 50
-bText = (leftX*0.8+b/2, topY+a*1.1)
-aText = (leftX*0.8, topY+a/2)
-legend = (leftX+b/4, topY+a*1.5)
-legend2 = (leftX+b/4, topY+a*1.65)
-buttonPlace = {"x": leftX+b/4, "y": topY+2*a}
+topY = 10
+margin = 10
 
 
 def getFont(size=16):
@@ -25,40 +22,47 @@ def getFont(size=16):
 
 
 def main():
-    def printHypotenuse(a, b):
+    def displayHypotenuse(a, b):
         c = scale*(a**2 + b**2)**0.5
-        canvas.create_text(leftX+b/2, 50+a/2, text=f"c={c:.{precision}f}",
-        font=getFont())
+        canvas.create_text(*cText, text=f"c={c:.{precision}f}", font=getFont(24), anchor="w"),
 
     root = tk.Tk()
     root.title("Pythagorus")
-    w = int(a + b)
-    root.geometry(f"{w}x{w}")
-
-    canvas = tk.Canvas(root, width=w, height=w)
+    screenWidth = root.winfo_screenwidth()
+    screenHeight = root.winfo_screenheight()
+    root.geometry(f"{int(screenWidth/2)}x{int(screenHeight)}+0+0")
+    canvas = tk.Canvas(root, width=screenWidth, height=screenHeight)
+    canvas.pack()
 
     points = (
         (leftX+b, topY+a),
         (leftX, topY),
         (leftX, topY+a)
     )
+    LEFT = 0.3
+    buttonPlace = {"x": screenWidth*LEFT, "y": screenHeight*0.7}
+    bText = (leftX*0.9+b/2, topY+a + margin)
+    aText = (leftX*0.9, topY+a/2)
+    cText = (leftX+b/2, topY+a/2+margin)
+    legend = (screenWidth*LEFT, screenHeight*0.55)
+    legend2 = (screenWidth*LEFT, screenHeight*0.6)
     canvas.create_polygon(*points, fill='light green')
-    canvas.create_text(*bText, text=f"b={b*scale:.{precision}f}", font=getFont())
-    canvas.create_text(*aText, text=f"a={a*scale:.{precision}f}", font=getFont())
-    canvas.create_text(*legend, text="c² = a² + b²", font=getFont(24), anchor="w")
-    canvas.create_text(*legend2, text="c = √(a² + b²)", font=getFont(24), anchor="w")
+    canvas.create_text(*bText, text=f"b={b*scale:.{precision}f}", font=getFont(24), anchor="w")
+    canvas.create_text(*aText, text=f"a={a*scale:.{precision}f}", font=getFont(24), anchor="e")
+    canvas.create_text(*cText, text=f"c", font=getFont(24), anchor="w"),
+    canvas.create_text(*legend, text="c² = a² + b²", font=getFont(24), fill="red", anchor="w")
+    canvas.create_text(*legend2, text="c = √(a² + b²)", font=getFont(24), fill="red", anchor="w")
     
-    
-    pfn = partial(printHypotenuse, a, b)
+    pfn = partial(displayHypotenuse, a, b)
     button = tk.Button(
         canvas,
-        text="hypotenuse",
+        text="answer",
         command=pfn,
         width=15,
         height=2, 
         bg="purple",
         fg="white",
-        font=getFont()
+        font=getFont(24)
     )
     button.place(**buttonPlace)
     canvas.pack()

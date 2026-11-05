@@ -4,8 +4,8 @@ import math
 import numpy as np
 
 # display N/D in pies
-N = 17
-D = 5
+N = 63
+D = 19
 pies = N // D
 fraction = N - D * pies
 w = 1200

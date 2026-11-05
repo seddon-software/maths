@@ -30,7 +30,7 @@ def callback():
     ratio.inc()
     
 ##########################################################################
-ratio = Ratio(2, 7, 81)
+ratio = Ratio(5, 2, 63)
 
 root = tk.Tk()
 root.title("Ratios")
