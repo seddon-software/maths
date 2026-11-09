@@ -40,7 +40,7 @@ def callback():
     
 ##########################################################################
 try:
-    ratio = Ratio(9, 3, 5, total=204)
+    ratio = Ratio(9, 3, 8, total=400)
 except NotMultiple as e:
     print("not multiple")
     exit(1)
