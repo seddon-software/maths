@@ -8,10 +8,10 @@ from math import pi as π
 precision = 2
 
 # 2 of these must be None
-ANGLE = 45
-OPPOSITE = 10
+ANGLE = None
+OPPOSITE = 18
 HYPOTENUSE = None
-ADJACENT = None
+ADJACENT = 15
 
 class Entity:
     def __init__(self, name, anchor):
