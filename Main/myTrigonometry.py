@@ -168,9 +168,14 @@ button2 = tk.Button(
 button1.place({'x':xMax/1.5, 'y':yMax/2})
 button2.place({'x':xMax/1.5, 'y':yMax/1.5})
 
-canvas.create_text(xMax/1.5, 50, text="SOH:  sin(θ) = Opposite / Hypotenuse", font=getFont(), anchor="w")
-canvas.create_text(xMax/1.5, 85, text="CAH:  cos(θ) = Adjacent / Hypotenuse", font=getFont(), anchor="w")
-canvas.create_text(xMax/1.5, 120, text="TOA:  tan(θ) = Opposite / Adjacent", font=getFont(), anchor="w")
+spacing = 35
+canvas.create_text(xMax/1.5, 50+0*spacing, text="sin(θ) = Opposite / Hypotenuse", font=getFont(), anchor="w")
+canvas.create_text(xMax/1.5, 50+1*spacing, text="cos(θ) = Adjacent / Hypotenuse", font=getFont(), anchor="w")
+canvas.create_text(xMax/1.5, 50+2*spacing, text="tan(θ) = Opposite / Adjacent", font=getFont(), anchor="w")
+canvas.create_text(xMax/1.5, 50+3*spacing, text="H = √(O² + A²)", font=getFont(), anchor="w")
+canvas.create_text(xMax/1.5, 50+4*spacing, text="O = √(H² - A²)", font=getFont(), anchor="w")
+canvas.create_text(xMax/1.5, 50+5*spacing, text="A = √(H² - O²)", font=getFont(), anchor="w")
+
 canvas.pack(fill="both", expand=True)
 
 root.mainloop()
