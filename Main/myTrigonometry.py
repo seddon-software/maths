@@ -101,7 +101,9 @@ def drawTriangle(adjacentEntity, oppositeEntity, hypotenuseEntity, angleEntity):
     # add labels
     for item in oppositeEntity, adjacentEntity, hypotenuseEntity, angleEntity:
         item.id = canvas.create_text(*item.getTextPosition(), text=item.getText(), font=getFont(), anchor=item.anchor)
-    
+
+    canvas.create_line(T(ADJACENT*0.0), T(OPPOSITE*0.95), T(ADJACENT*0.05), T(OPPOSITE*0.95), fill="black", width=2)
+    canvas.create_line(T(ADJACENT*0.05), T(OPPOSITE*0.95), T(ADJACENT*0.05), T(OPPOSITE), fill="black", width=2)
     canvas.pack()
 
 def getFont(size=24):
@@ -169,9 +171,9 @@ button1.place({'x':xMax/1.5, 'y':yMax/2})
 button2.place({'x':xMax/1.5, 'y':yMax/1.5})
 
 spacing = 35
-canvas.create_text(xMax/1.5, 50+0*spacing, text="sin(θ) = Opposite / Hypotenuse", font=getFont(), anchor="w")
-canvas.create_text(xMax/1.5, 50+1*spacing, text="cos(θ) = Adjacent / Hypotenuse", font=getFont(), anchor="w")
-canvas.create_text(xMax/1.5, 50+2*spacing, text="tan(θ) = Opposite / Adjacent", font=getFont(), anchor="w")
+canvas.create_text(xMax/1.5, 50+0*spacing, text="sin(θ) = Opposite / Hypotenuse = O/H", font=getFont(), anchor="w")
+canvas.create_text(xMax/1.5, 50+1*spacing, text="cos(θ) = Adjacent / Hypotenuse = A/H", font=getFont(), anchor="w")
+canvas.create_text(xMax/1.5, 50+2*spacing, text="tan(θ) = Opposite / Adjacent = O/A", font=getFont(), anchor="w")
 canvas.create_text(xMax/1.5, 50+3*spacing, text="H = √(O² + A²)", font=getFont(), anchor="w")
 canvas.create_text(xMax/1.5, 50+4*spacing, text="O = √(H² - A²)", font=getFont(), anchor="w")
 canvas.create_text(xMax/1.5, 50+5*spacing, text="A = √(H² - O²)", font=getFont(), anchor="w")
