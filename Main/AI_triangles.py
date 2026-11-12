@@ -11,7 +11,7 @@ root.title("Right Angle Triangle")
 
 # Full screen: Esc exits, F11 toggles
 root.attributes("-fullscreen", True)
-root.bind("<Escape>", lambda e: root.attributes("-fullscreen", False))
+root.bind("<Escape>", lambda e: root.destroy())
 root.bind("<F11>", lambda e: root.attributes(
     "-fullscreen", not root.attributes("-fullscreen")))
 
