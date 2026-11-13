@@ -105,6 +105,11 @@ def new_example():
         canvas.create_text(mx + ox / olen * off, my + oy / olen * off,
                            text=f"{side_units}", font=("Arial", 22))
 
+    # Title just above everything drawn so far (triangle, ticks, side labels)
+    left, top, right, bottom = canvas.bbox("all")
+    canvas.create_text(cx, top - 15, text="Equilateral Triangle",
+                       font=("Arial", 32, "bold"), anchor="s")
+
 
 def inside_triangle(x, y):
     """Point-in-triangle test using the sign of the cross product on each edge."""
