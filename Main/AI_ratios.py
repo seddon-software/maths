@@ -1,4 +1,3 @@
-
 import random
 import tkinter as tk
 
@@ -19,6 +18,9 @@ STAR_COLOR = "red"
 TEXT_COLOR = "black"
 SCREEN_PADDING = 0.10
 
+TOGGLE_FONT = ("Arial", 18, "bold")
+MODE_NAMES = {False: "Original", True: "Simple"}
+
 RATIO_MIN, RATIO_MAX = 1, 10
 MULTIPLIER_MIN, MULTIPLIER_MAX = 10, 50
 
@@ -26,8 +28,11 @@ DATA_GRID_ROWS = [1, 3]
 MIDDLE_GRID_ROW = 2
 COL_OFFSET = 1
 
+# False = original mode, True = simple mode
+simple_mode = False
 
-def make_puzzle():
+
+def make_puzzle(simple):
     """Random multiplier and ratios; last column contains totals."""
 
     multiplier = random.randint(MULTIPLIER_MIN, MULTIPLIER_MAX)
@@ -41,6 +46,15 @@ def make_puzzle():
     row2 = [v * multiplier for v in row1[:3]]
     row2.append(sum(row2))
 
+    if simple:
+        # Row 1 first three values shown, grand total in row 2 shown.
+        # Everything else is hidden and can be deduced.
+        vals = [
+            row1[:3] + ["*"],
+            ["*", "*", "*", row2[3]],
+        ]
+        return multiplier, vals
+
     vals = [row1, row2]
 
     # One column fully shown; hide one value in each other column
@@ -53,10 +67,10 @@ def make_puzzle():
     return multiplier, vals
 
 
-MULTIPLIER, values = make_puzzle()
+MULTIPLIER, values = make_puzzle(simple_mode)
 
 
-def validate():
+def validate(simple):
 
     if not isinstance(MULTIPLIER, int) or MULTIPLIER == 0:
         raise ValueError("MULTIPLIER must be a non-zero integer")
@@ -77,6 +91,26 @@ def validate():
                 raise ValueError(
                     f"Row {r+1}, column {c+1} must be an integer or '*'"
                 )
+
+    if simple:
+        # Row 1: first three shown, total hidden
+        if not all(isinstance(values[0][c], int) for c in range(3)):
+            raise ValueError("Simple mode: row 1 values must all be shown")
+
+        if values[0][3] != "*":
+            raise ValueError("Simple mode: row 1 total must be hidden")
+
+        # Row 2: first three hidden, total shown
+        if not all(values[1][c] == "*" for c in range(3)):
+            raise ValueError("Simple mode: row 2 values must be hidden")
+
+        if not isinstance(values[1][3], int):
+            raise ValueError("Simple mode: row 2 total must be shown")
+
+        if values[1][3] % sum(values[0][:3]) != 0:
+            raise ValueError("Simple mode: total does not divide evenly")
+
+        return
 
     # Check totals when all three component values are visible
     for r in range(ROWS):
@@ -159,8 +193,8 @@ def new_example():
 
     global MULTIPLIER, values
 
-    MULTIPLIER, values = make_puzzle()
-    validate()
+    MULTIPLIER, values = make_puzzle(simple_mode)
+    validate(simple_mode)
 
     # Update data buttons
     for r in range(ROWS):
@@ -178,13 +212,23 @@ def new_example():
         btn.config(text=MIDDLE_HIDDEN_TEXT)
 
 
+def toggle_mode():
+    """Switch between original and simple mode and start a new puzzle."""
+
+    global simple_mode
+
+    simple_mode = not simple_mode
+    toggle_btn.config(text=f"Mode: {MODE_NAMES[simple_mode]}")
+    new_example()
+
+
 def on_background_click(event):
     """Generate a new puzzle only when clicking outside main."""
 
     widget = event.widget
 
     while widget is not None:
-        if widget == main:
+        if widget == main or widget == toggle_btn:
             return
 
         if widget == root:
@@ -196,7 +240,7 @@ def on_background_click(event):
 
 
 # Validate initial puzzle
-validate()
+validate(simple_mode)
 
 
 # --------------------------------------------------
@@ -206,11 +250,16 @@ validate()
 root = tk.Tk()
 root.title(TITLE_TEXT)
 
-# Full screen
+# Start at the mouse pointer so fullscreen happens on that monitor
+px, py = root.winfo_pointerxy()
+root.geometry(f"800x600+{max(px - 400, 0)}+{max(py - 300, 0)}")
+root.update()
 root.attributes("-fullscreen", True)
 
-# Escape closes the program completely
+# Esc closes the program completely, F11 toggles fullscreen
 root.bind("<Escape>", lambda e: root.destroy())
+root.bind("<F11>", lambda e: root.attributes(
+    "-fullscreen", not root.attributes("-fullscreen")))
 
 # Main container
 main = tk.Frame(root)
@@ -235,6 +284,16 @@ title_label.place(
     rely=SCREEN_PADDING / 2,
     anchor="center"
 )
+
+# Mode toggle button (top-right corner)
+toggle_btn = tk.Button(
+    root,
+    text=f"Mode: {MODE_NAMES[simple_mode]}",
+    font=TOGGLE_FONT,
+    command=toggle_mode,
+)
+
+toggle_btn.place(relx=1.0, rely=0.0, x=-20, y=20, anchor="ne")
 
 buttons = [[None] * COLS for _ in range(ROWS)]
 middle_buttons = [None] * COLS

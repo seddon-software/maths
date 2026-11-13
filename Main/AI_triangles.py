@@ -2,34 +2,27 @@ import math
 import random
 import tkinter as tk
 
+TITLE = "Right Angled Triangle"
 SCREEN_PADDING = 0.10    # fraction of the screen left empty on each side
 MIN_SIDE, MAX_SIDE = 5, 25
 MIN_ANGLE, MAX_ANGLE = 25, 65
 
 root = tk.Tk()
-root.title("Right Angle Triangle")
+root.title(TITLE)
 
-# Full screen: Esc exits, F11 toggles
+# Start at the mouse pointer so fullscreen happens on that monitor
+px, py = root.winfo_pointerxy()
+root.geometry(f"800x600+{max(px - 400, 0)}+{max(py - 300, 0)}")
+root.update()
 root.attributes("-fullscreen", True)
+
+# Esc exits, F11 toggles
 root.bind("<Escape>", lambda e: root.destroy())
 root.bind("<F11>", lambda e: root.attributes(
     "-fullscreen", not root.attributes("-fullscreen")))
 
-screen_w = root.winfo_screenwidth()
-screen_h = root.winfo_screenheight()
-
-canvas = tk.Canvas(root, width=screen_w, height=screen_h, bg="white",
-                   highlightthickness=0)
+canvas = tk.Canvas(root, bg="white", highlightthickness=0)
 canvas.pack(fill="both", expand=True)
-
-# Drawing area: the middle 80% of the screen
-area_w = screen_w * (1 - 2 * SCREEN_PADDING)
-area_h = screen_h * (1 - 2 * SCREEN_PADDING)
-area_left = screen_w * SCREEN_PADDING
-area_top = screen_h * SCREEN_PADDING
-
-# One scale for both sides (pixels per unit), so a side of MAX_SIDE just fits
-scale = min(area_w, area_h) / MAX_SIDE
 
 # State of the current example
 ex = {}
@@ -66,6 +59,23 @@ def draw_angle(bottom_corner):
 def new_example():
     """Clear the canvas, pick new sides and draw a fresh triangle."""
     canvas.delete("all")
+
+    # Measure the actual canvas (i.e. the monitor we ended up on)
+    screen_w = canvas.winfo_width()
+    screen_h = canvas.winfo_height()
+
+    # Drawing area: the middle 80% of the screen
+    area_w = screen_w * (1 - 2 * SCREEN_PADDING)
+    area_h = screen_h * (1 - 2 * SCREEN_PADDING)
+    area_left = screen_w * SCREEN_PADDING
+    area_top = screen_h * SCREEN_PADDING
+
+    # Title centred in the empty strip above the drawing area
+    canvas.create_text(screen_w / 2, screen_h * SCREEN_PADDING / 2,
+                       text=TITLE, font=("Arial", 32, "bold"))
+
+    # One scale for both sides (pixels per unit), so a side of MAX_SIDE just fits
+    scale = min(area_w, area_h) / MAX_SIDE
 
     # Re-roll until both acute angles are between MIN_ANGLE and MAX_ANGLE
     while True:
@@ -141,5 +151,6 @@ def on_canvas_click(event):
 
 canvas.bind("<Button-1>", on_canvas_click)
 
-new_example()
+# Wait briefly for the window manager to finish going fullscreen, then draw
+root.after(300, new_example)
 root.mainloop()
