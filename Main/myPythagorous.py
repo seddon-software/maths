@@ -66,6 +66,9 @@ def main():
     )
     button.place(**buttonPlace)
     canvas.pack()
+    root.attributes("-fullscreen", True)
+    # Esc exits
+    root.bind("<Escape>", lambda e: root.destroy())
     root.mainloop()
 
 main()

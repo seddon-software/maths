@@ -6,7 +6,8 @@ SCREEN_PADDING = 0.10    # fraction of the screen left empty on each side
 MIN_SIDE, MAX_SIDE = 8, 25   # side length in units (sets the triangle size)
 
 root = tk.Tk()
-root.title("Equilateral Triangle")
+SHOW_TITLE = False
+TITLE = "Equilateral Triangle"
 
 # Start at the mouse pointer so fullscreen happens on that monitor
 px, py = root.winfo_pointerxy()
@@ -14,10 +15,8 @@ root.geometry(f"800x600+{max(px - 400, 0)}+{max(py - 300, 0)}")
 root.update()
 root.attributes("-fullscreen", True)
 
-# Esc exits, F11 toggles
+# Esc exits
 root.bind("<Escape>", lambda e: root.destroy())
-root.bind("<F11>", lambda e: root.attributes(
-    "-fullscreen", not root.attributes("-fullscreen")))
 
 canvas = tk.Canvas(root, bg="white", highlightthickness=0)
 canvas.pack(fill="both", expand=True)
@@ -107,7 +106,7 @@ def new_example():
 
     # Title just above everything drawn so far (triangle, ticks, side labels)
     left, top, right, bottom = canvas.bbox("all")
-    canvas.create_text(cx, top - 15, text="Equilateral Triangle",
+    if SHOW_TITLE: canvas.create_text(cx, top - 15, text=TITLE,
                        font=("Arial", 32, "bold"), anchor="s")
 
 

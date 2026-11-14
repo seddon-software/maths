@@ -3,12 +3,12 @@ import random
 import tkinter as tk
 
 TITLE = "Isosceles Triangle"
+SHOW_TITLE = False
 SCREEN_PADDING = 0.10    # fraction of the screen left empty on each side
 MIN_SIDE, MAX_SIDE = 5, 25          # side lengths in units
 MIN_BASE_ANGLE, MAX_BASE_ANGLE = 30, 75   # keeps the triangle from being too skinny or flat
 
 root = tk.Tk()
-root.title("Isosceles Triangle")
 
 # Start at the mouse pointer so fullscreen happens on that monitor
 px, py = root.winfo_pointerxy()
@@ -16,10 +16,8 @@ root.geometry(f"800x600+{max(px - 400, 0)}+{max(py - 300, 0)}")
 root.update()
 root.attributes("-fullscreen", True)
 
-# Esc exits, F11 toggles
+# Esc exits
 root.bind("<Escape>", lambda e: root.destroy())
-root.bind("<F11>", lambda e: root.attributes(
-    "-fullscreen", not root.attributes("-fullscreen")))
 
 canvas = tk.Canvas(root, bg="white", highlightthickness=0)
 canvas.pack(fill="both", expand=True)
@@ -69,7 +67,7 @@ def new_example():
     area_h = screen_h * (1 - 2 * SCREEN_PADDING)
 
     # Title centred in the empty strip above the drawing area
-    canvas.create_text(screen_w / 2, screen_h * SCREEN_PADDING / 2,
+    if SHOW_TITLE: canvas.create_text(screen_w / 2, screen_h * SCREEN_PADDING / 2,
                        text=TITLE, font=("Arial", 32, "bold"))
 
     # Re-roll until the triangle is valid, not equilateral, and not too skinny

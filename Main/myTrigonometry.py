@@ -177,6 +177,9 @@ canvas.create_text(xMax/1.5, 50+2*spacing, text="tan(θ) = Opposite / Adjacent =
 canvas.create_text(xMax/1.5, 50+3*spacing, text="H = √(O² + A²)", font=getFont(), anchor="w")
 canvas.create_text(xMax/1.5, 50+4*spacing, text="O = √(H² - A²)", font=getFont(), anchor="w")
 canvas.create_text(xMax/1.5, 50+5*spacing, text="A = √(H² - O²)", font=getFont(), anchor="w")
+root.attributes("-fullscreen", True)
+# Esc exits
+root.bind("<Escape>", lambda e: root.destroy())
 
 canvas.pack(fill="both", expand=True)
 

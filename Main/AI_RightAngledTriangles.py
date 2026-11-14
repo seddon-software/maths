@@ -2,7 +2,8 @@ import math
 import random
 import tkinter as tk
 
-TITLE = "Right Angled Triangle"
+SHOW_TITLE = False
+TITLE = "RIGHT ANGLE TRIANGLE"
 SCREEN_PADDING = 0.10    # fraction of the screen left empty on each side
 MIN_SIDE, MAX_SIDE = 5, 25
 MIN_ANGLE, MAX_ANGLE = 25, 65
@@ -71,7 +72,7 @@ def new_example():
     area_top = screen_h * SCREEN_PADDING
 
     # Title centred in the empty strip above the drawing area
-    canvas.create_text(screen_w / 2, screen_h * SCREEN_PADDING / 2,
+    if SHOW_TITLE: canvas.create_text(screen_w / 2, screen_h * SCREEN_PADDING / 2,
                        text=TITLE, font=("Arial", 32, "bold"))
 
     # One scale for both sides (pixels per unit), so a side of MAX_SIDE just fits
