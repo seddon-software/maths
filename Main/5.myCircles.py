@@ -1,5 +1,5 @@
-radius = 5           # change this
-arc = 180              # change this
+radius = 5.3           # change this
+arc = 192             # change this
 
 #############################################################
 import tkinter as tk
@@ -7,7 +7,7 @@ import numpy as np
 from numpy import pi as π
 from functools import partial
 
-π = 3.14
+#π = 3.14
 scale = radius/150
 radius = radius/scale
 margin =   15

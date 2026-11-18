@@ -9,9 +9,9 @@ precision = 2
 
 # 2 of these must be None
 ANGLE = None
-OPPOSITE = 18
-HYPOTENUSE = None
-ADJACENT = 15
+OPPOSITE = 10.73
+HYPOTENUSE = 25.67
+ADJACENT = None
 
 class Entity:
     def __init__(self, name, anchor):
