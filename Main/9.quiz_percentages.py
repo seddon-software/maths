@@ -38,8 +38,7 @@ def quiz():
         os.system("clear")
         question, answer = generate_question()
 
-        user_input = input(f"{question}\n💨 > ").strip().lower()
-
+        user_input = input(f"\033[91m{question}\033[0m\n💨 > ").strip().lower()
         if user_input in ["q", "quit"]:
             break
 
