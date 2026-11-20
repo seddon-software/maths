@@ -1,3 +1,4 @@
+
 import tkinter as tk
 import random
 
@@ -10,7 +11,6 @@ MAX_FREQUENCY = 5
 numbers = []
 frequencies = []
 product_entries = []
-cumulative_frequency_labels = []
 
 
 # ---------------- CALCULATIONS ----------------
@@ -32,19 +32,6 @@ def calculate_answers():
 
     # Mean
     correct_mean = correct_total / correct_total_frequency
-
-
-# ---------------- CUMULATIVE FREQUENCY ----------------
-
-def calculate_cumulative_frequencies():
-
-    running_total = 0
-
-    for frequency, label in zip(
-        frequencies, cumulative_frequency_labels
-    ):
-        running_total += frequency
-        label.config(text=str(running_total))
 
 
 # ---------------- NEW QUESTION ----------------
@@ -74,10 +61,9 @@ def new_question():
     calculate_answers()
 
     headings = [
-        "Number",
-        "Frequency",
-        "Number × Frequency",
-        "Cumulative Frequency"
+        "Price",
+        "Quantity",
+        "Cost"
     ]
 
     for col, heading in enumerate(headings):
@@ -89,9 +75,6 @@ def new_question():
         ).grid(row=0, column=col, padx=5, pady=6)
 
     product_entries.clear()
-    cumulative_frequency_labels.clear()
-
-    running_total = 0
 
     # Display table
     for row in range(rows):
@@ -122,25 +105,7 @@ def new_question():
 
         product_entries.append(entry)
 
-        # Cumulative frequency
-        running_total += frequencies[row]
-
-        cumulative_label = tk.Label(
-            data_frame,
-            text=str(running_total),
-            font=("Arial", 14),
-            width=12
-        )
-
-        cumulative_label.grid(
-            row=row + 1,
-            column=3,
-            pady=3
-        )
-
-        cumulative_frequency_labels.append(cumulative_label)
-
-    # Total row (same grid as the table, so columns line up)
+    # Total row
     total_row = rows + 1
 
     tk.Label(
@@ -397,7 +362,7 @@ product_feedback.pack(pady=5)
 
 tk.Button(
     root,
-    text="Check Products",
+    text="Check Costs",
     font=("Arial", 14),
     command=check_products
 ).pack(pady=8)
@@ -410,7 +375,7 @@ total_frame.pack(pady=8)
 
 tk.Button(
     total_frame,
-    text="Check Frequency Total",
+    text="Check Total Quantity",
     font=("Arial", 13),
     command=check_frequency_total
 ).pack(side="left", padx=8)
@@ -424,7 +389,7 @@ frequency_total_feedback.pack(side="left", padx=8)
 
 tk.Button(
     total_frame,
-    text="Check Product Total",
+    text="Check Total Cost",
     font=("Arial", 13),
     command=check_product_total
 ).pack(side="left", padx=8)
