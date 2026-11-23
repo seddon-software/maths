@@ -16,14 +16,16 @@ FONT = ("Arial", 26, "bold")
 NEW_GAME_DISTANCE = 60
 
 # Random challenge selection
-SEARCH_OPTIONS = [
-    ("prime", 3),
-    ("odd", 1),
-    ("even", 1),
-    ("multiple of 7", 1),
-    ("divisible by 8", 1)
+SEARCH = [
+    ("prime numbers", 2),
+    ("odd numbers", 1),
+    ("even numbers", 1),
+    ("numbers multiples of 7", 1),
+    ("numbers divisible by 8", 1)
 ]
 
+id = 0
+text = ""
 
 def is_prime(n):
     if n < 2:
@@ -37,35 +39,35 @@ def is_prime(n):
 
 
 def is_target(n):
-    if SEARCH_FOR == "prime":
+    if SEARCH_FOR == SEARCH[0][0]:
         return is_prime(n)
 
-    elif SEARCH_FOR == "odd":
+    elif SEARCH_FOR == SEARCH[1][0]:
         return n % 2 != 0
 
-    elif SEARCH_FOR == "even":
+    elif SEARCH_FOR == SEARCH[2][0]:
         return n % 2 == 0
 
-    elif SEARCH_FOR == "multiple of 7":
+    elif SEARCH_FOR == SEARCH[3][0]:
         return n % 7 == 0
 
-    elif SEARCH_FOR == "divisible by 8":
+    elif SEARCH_FOR == SEARCH[4][0]:
         return n % 8 == 0
 
     return False
 
 
 def new_game(event=None):
-    global found, game_over, positions, SEARCH_FOR
+    global text,found, game_over, positions, SEARCH_FOR
 
     canvas.delete("all")
 
     found = 0
     game_over = False
 
-    # Randomly select challenge (prime is 3 times more likely)
-    options = [item[0] for item in SEARCH_OPTIONS]
-    weights = [item[1] for item in SEARCH_OPTIONS]
+    # Randomly select challenge (prime is 2 times more likely)
+    options = [item[0] for item in SEARCH]
+    weights = [item[1] for item in SEARCH]
 
     SEARCH_FOR = random.choices(
         options, weights=weights, k=1
@@ -125,13 +127,18 @@ def new_game(event=None):
             lambda event, n=number, t=tag: click_number(n, t)
         )
 
-    status.config(
-        text=f"Find the {TARGET_COUNT} {SEARCH_FOR} numbers!"
-    )
+    text=f"{TARGET_COUNT} {SEARCH_FOR}"
+    status.config(text=text)
+    root.title(text)
 
 
 def click_number(number, tag):
-    global found, game_over
+    global id, found, game_over
+
+    try:
+        canvas.delete(id)
+    except:
+        pass
 
     if game_over:
         return
@@ -152,9 +159,9 @@ def click_number(number, tag):
             status.config(text="Well done! You found them all!")
 
     else:
-        game_over = True
+        game_over = False
 
-        canvas.create_text(
+        id = canvas.create_text(
             WIDTH // 2,
             HEIGHT // 2,
             text="💣",

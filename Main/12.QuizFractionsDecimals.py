@@ -41,15 +41,22 @@ def generate_question():
 
     else:
         # Decimal to fraction
-        # Only multiples of 1/2 to 1/8
-        denominator = random.choice(DENOMINATORS)
-        numerator = random.randint(1, denominator * 10)
+        while True:
+            denominator = random.choice(DENOMINATORS)
+            numerator = random.randint(1, denominator * 10)
 
-        fraction = Fraction(numerator, denominator)
-        decimal = float(fraction)
+            fraction = Fraction(numerator, denominator)
+
+            # Round to 2 decimal places
+            decimal = round(float(fraction), 2)
+
+            # Calculate answer from displayed decimal
+            answer = Fraction(f"{decimal:.2f}")
+
+            # Reject answers with denominator greater than 20
+            if answer.denominator <= 20 and answer.denominator != 1: break
 
         question = f"Convert {decimal:.2f} to a fraction"
-        answer = fraction
         answer_type = "fraction"
 
     return question, answer, answer_type
@@ -113,9 +120,8 @@ def main():
                         user_answer = whole + remainder
                 else:
                     user_answer = Fraction(user_input)
-
-                correct = user_answer == answer
-
+                correct = user_answer == answer and user_input == mixed_number(answer)
+                
                 if correct:
                     print("Correct!")
                 else:
@@ -126,7 +132,10 @@ def main():
 
         except (ValueError, ZeroDivisionError):
             print("Invalid answer.")
-            print(f"The answer is {mixed_number(answer) if answer_type == 'fraction' else f'{answer:.2f}'}")
+            print(
+                f"The answer is "
+                f"{mixed_number(answer) if answer_type == 'fraction' else f'{answer:.2f}'}"
+            )
 
     print("\n" + "=" * 45)
     print(f"Your score: {score} out of {questions_answered}")

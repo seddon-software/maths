@@ -132,9 +132,9 @@ def new_example():
         "Parallelogram",
         "Trapezium",
         "Kite",
-        "Right-angled triangle",
         "Isosceles triangle",
-        "Equilateral triangle"
+        "Equilateral triangle",
+        "Regular hexagon"
     ])
 
     w = random.randint(MIN_SIDE, MAX_SIDE)
@@ -188,12 +188,6 @@ def new_example():
         units = [(0,-h/2),(top/2,0),
                  (0,h/2),(-bottom/2,0)]
 
-    elif shape == "Right-angled triangle":
-        # Legs w and h; avoid w == h so it isn't also isosceles
-        while h == w:
-            h = random.randint(MIN_SIDE, MAX_SIDE)
-        units = [(0,0),(w,0),(0,h)]
-
     elif shape == "Isosceles triangle":
         # Base w, height h; avoid equilateral and right-angled cases
         eq_height = w * math.sqrt(3) / 2
@@ -205,6 +199,13 @@ def new_example():
     elif shape == "Equilateral triangle":
         height = w * math.sqrt(3) / 2
         units = [(-w/2,0),(w/2,0),(0,height)]
+    elif shape == "Regular hexagon":
+        radius = w
+        units = [
+            (radius * math.cos(math.radians(60*i)),
+             radius * math.sin(math.radians(60*i)))
+            for i in range(6)
+        ]
 
     n = len(units)
 

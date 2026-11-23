@@ -33,8 +33,8 @@ def quiz():
     print("Type 'q' to quit\n")
 
     while True:
-        time.sleep(2)
-        input("?")
+        time.sleep(5)
+        # input("?")
         os.system("clear")
         question, answer = generate_question()
 
